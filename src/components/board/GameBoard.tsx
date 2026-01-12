@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import type { PlacedCard, BoardPosition } from '../../types';
 import { HexCard } from '../cards/HexCard';
-import { positionToKey } from '../../utils/hexGrid';
+import { positionToKey, getNeighbors, positionEquals } from '../../utils/hexGrid';
 
 interface GameBoardProps {
   board: PlacedCard[];
   onCardPlace?: (position: BoardPosition, rotation: number) => void;
+  selectedCard?: boolean;
 }
 
-export const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
+export const GameBoard: React.FC<GameBoardProps> = ({ board, onCardPlace, selectedCard }) => {
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
@@ -25,9 +26,39 @@ export const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
     return { x, y };
   };
 
+  // Get valid placement positions (neighbors of existing cards)
+  const getValidPlacements = (): BoardPosition[] => {
+    if (board.length === 0) {
+      return [{ q: 0, r: 0, s: 0 }]; // Center position for first card
+    }
+
+    const validPositions: BoardPosition[] = [];
+    const occupiedKeys = new Set(board.map(p => positionToKey(p.position)));
+
+    board.forEach(placedCard => {
+      const neighbors = getNeighbors(placedCard.position);
+      neighbors.forEach(neighbor => {
+        const key = positionToKey(neighbor);
+        if (!occupiedKeys.has(key)) {
+          // Check if this position is already in validPositions
+          const exists = validPositions.some(p => positionEquals(p, neighbor));
+          if (!exists) {
+            validPositions.push(neighbor);
+          }
+        }
+      });
+    });
+
+    return validPositions;
+  };
+
+  const validPlacements = selectedCard ? getValidPlacements() : [];
+
   const handleMouseDown = (e: React.MouseEvent) => {
-    setIsPanning(true);
-    setPanStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+    if (!selectedCard) {
+      setIsPanning(true);
+      setPanStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -47,6 +78,12 @@ export const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
     setZoom(prev => Math.max(0.5, Math.min(3, prev * delta)));
+  };
+
+  const handlePlacementClick = (position: BoardPosition) => {
+    if (onCardPlace && selectedCard) {
+      onCardPlace(position, 0);
+    }
   };
 
   return (
@@ -75,7 +112,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
 
       {/* Board */}
       <div
-        className="absolute inset-0 cursor-move"
+        className={`absolute inset-0 ${!selectedCard ? 'cursor-move' : 'cursor-pointer'}`}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -91,10 +128,39 @@ export const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
           }}
         >
           <g transform="translate(400, 300)">
-            {/* Grid dots for reference (optional) */}
-            {board.length === 0 && (
-              <circle cx={0} cy={0} r={5} fill="rgba(255,255,255,0.3)" />
-            )}
+            {/* Valid placement indicators */}
+            {validPlacements.map((position, index) => {
+              const pixel = hexToPixel(position);
+              return (
+                <g
+                  key={`placement-${positionToKey(position)}-${index}`}
+                  transform={`translate(${pixel.x}, ${pixel.y})`}
+                  onClick={() => handlePlacementClick(position)}
+                  style={{ cursor: 'pointer' }}
+                  className="placement-indicator"
+                >
+                  <polygon
+                    points={(() => {
+                      const s = hexSize / 2;
+                      const points: [number, number][] = [];
+                      for (let i = 0; i < 6; i++) {
+                        const angle = (Math.PI / 3) * i;
+                        const x = s * Math.cos(angle);
+                        const y = s * Math.sin(angle);
+                        points.push([x, y]);
+                      }
+                      return points.map(([x, y]) => `${x},${y}`).join(' ');
+                    })()}
+                    fill="rgba(34, 211, 238, 0.2)"
+                    stroke="rgba(34, 211, 238, 0.6)"
+                    strokeWidth="2"
+                    strokeDasharray="5,5"
+                    className="animate-pulse"
+                  />
+                  <circle cx={0} cy={0} r={8} fill="rgba(34, 211, 238, 0.8)" />
+                </g>
+              );
+            })}
 
             {/* Placed cards */}
             {board.map((placedCard, index) => {
@@ -126,7 +192,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
       </div>
 
       {/* Instructions */}
-      {board.length === 0 && (
+      {board.length === 0 && !selectedCard && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-2xl max-w-md text-center">
             <h2 className="text-2xl font-bold text-quantum-blue mb-2">
@@ -137,6 +203,15 @@ export const GameBoard: React.FC<GameBoardProps> = ({ board }) => {
               The first card will be placed in the center.
             </p>
           </div>
+        </div>
+      )}
+
+      {/* Placement instructions */}
+      {selectedCard && board.length > 0 && (
+        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg max-w-xs">
+          <p className="text-sm font-semibold text-quantum-blue">
+            Click on a glowing position to place your card
+          </p>
         </div>
       )}
     </div>

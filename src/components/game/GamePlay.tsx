@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { GameBoard } from '../board/GameBoard';
 import { PlayerHand } from '../ui/PlayerHand';
-import type { ParticleCard } from '../../types';
-import { createPosition } from '../../utils/hexGrid';
+import { ReferenceCards } from '../ui/ReferenceCards';
+import type { ParticleCard, BoardPosition } from '../../types';
 
 export const GamePlay: React.FC = () => {
   const {
@@ -16,6 +16,7 @@ export const GamePlay: React.FC = () => {
   } = useGameStore();
 
   const [selectedCard, setSelectedCard] = useState<ParticleCard | null>(null);
+  const [showReference, setShowReference] = useState(false);
 
   const currentPlayer = players[currentPlayerIndex];
 
@@ -23,15 +24,8 @@ export const GamePlay: React.FC = () => {
     setSelectedCard(card);
   };
 
-  const handlePlaceCard = () => {
+  const handlePlaceCard = (position: BoardPosition, rotation: number) => {
     if (!selectedCard) return;
-
-    // Determine position based on current board state
-    const position = board.length === 0 
-      ? createPosition(0, 0) // First card goes in center
-      : createPosition(1, 0); // Subsequent cards (simplified for now)
-
-    const rotation = 0; // No rotation for now
 
     placeCard(selectedCard, position, rotation);
     setSelectedCard(null);
@@ -57,6 +51,12 @@ export const GamePlay: React.FC = () => {
               <span className="opacity-75">Round:</span>{' '}
               <span className="font-semibold">1</span>
             </div>
+            <button
+              onClick={() => setShowReference(true)}
+              className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-all font-semibold"
+            >
+              📚 Reference
+            </button>
           </div>
         </div>
       </div>
@@ -83,19 +83,11 @@ export const GamePlay: React.FC = () => {
 
       {/* Game Board */}
       <div className="flex-1 relative">
-        <GameBoard board={board} />
-        
-        {/* Place Card Button */}
-        {selectedCard && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
-            <button
-              onClick={handlePlaceCard}
-              className="bg-quantum-blue text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
-            >
-              Place {selectedCard.name} 🎯
-            </button>
-          </div>
-        )}
+        <GameBoard 
+          board={board} 
+          onCardPlace={handlePlaceCard}
+          selectedCard={!!selectedCard}
+        />
       </div>
 
       {/* Player Hand */}
@@ -106,6 +98,9 @@ export const GamePlay: React.FC = () => {
         onCardClick={handleCardClick}
         selectedCard={selectedCard || undefined}
       />
+
+      {/* Reference Cards Modal */}
+      <ReferenceCards isOpen={showReference} onClose={() => setShowReference(false)} />
     </div>
   );
 };
