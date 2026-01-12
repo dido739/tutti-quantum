@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { GameState, GameMode, Player, PlacedCard, ParticleCard, BoardPosition } from '../types';
 import { PARTICLE_CARDS, shuffleDeck, getCardsPerPlayer } from '../data/cards';
+import { detectVertices, calculateScore } from '../utils/vertexValidation';
 
 interface GameStore extends GameState {
   // Actions
@@ -11,6 +12,7 @@ interface GameStore extends GameState {
   nextTurn: () => void;
   endGame: () => void;
   resetGame: () => void;
+  updateScores: () => void;
 }
 
 const initialState: GameState = {
@@ -88,17 +90,45 @@ export const useGameStore = create<GameStore>((set, get) => ({
       rotation,
     };
 
-    // Update player and board
+    const updatedBoard = [...board, placedCard];
+
+    // Detect vertices and calculate scores
+    const vertices = detectVertices(updatedBoard);
+    const totalScore = calculateScore(vertices);
+
+    // Update player scores (in competitive mode, score is individual)
     const updatedPlayers = [...players];
     updatedPlayers[currentPlayerIndex] = {
       ...currentPlayer,
       hand: updatedHand,
     };
 
+    // In competitive mode, update current player's score
+    // In cooperative mode, all players share the score
+    if (get().mode === 'competitive') {
+      updatedPlayers[currentPlayerIndex].score = totalScore;
+    } else {
+      updatedPlayers.forEach(p => p.score = totalScore);
+    }
+
     set({
       players: updatedPlayers,
-      board: [...board, placedCard],
+      board: updatedBoard,
+      vertices,
     });
+  },
+
+  updateScores: () => {
+    const { board, players, mode } = get();
+    const vertices = detectVertices(board);
+    const totalScore = calculateScore(vertices);
+
+    const updatedPlayers = players.map(player => ({
+      ...player,
+      score: mode === 'cooperative' ? totalScore : player.score,
+    }));
+
+    set({ players: updatedPlayers, vertices });
   },
 
   drawCard: (playerId: string) => {
@@ -157,3 +187,4 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set(initialState);
   },
 }));
+

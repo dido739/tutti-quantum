@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import type { PlacedCard, BoardPosition } from '../../types';
+import type { PlacedCard, BoardPosition, Vertex } from '../../types';
 import { HexCard } from '../cards/HexCard';
 import { positionToKey, getNeighbors, positionEquals } from '../../utils/hexGrid';
 
 interface GameBoardProps {
   board: PlacedCard[];
+  vertices?: Vertex[];
   onCardPlace?: (position: BoardPosition, rotation: number) => void;
   selectedCard?: boolean;
 }
 
-export const GameBoard: React.FC<GameBoardProps> = ({ board, onCardPlace, selectedCard }) => {
+export const GameBoard: React.FC<GameBoardProps> = ({ board, vertices: _vertices = [], onCardPlace, selectedCard }) => {
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);

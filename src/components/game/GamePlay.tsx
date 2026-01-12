@@ -10,8 +10,10 @@ export const GamePlay: React.FC = () => {
     players,
     currentPlayerIndex,
     board,
+    vertices,
     placeCard,
     nextTurn,
+    endGame,
     mode,
   } = useGameStore();
 
@@ -57,6 +59,12 @@ export const GamePlay: React.FC = () => {
             >
               📚 Reference
             </button>
+            <button
+              onClick={() => endGame()}
+              className="bg-red-500/80 hover:bg-red-500 px-4 py-2 rounded-lg transition-all font-semibold"
+            >
+              🏁 End Game
+            </button>
           </div>
         </div>
       </div>
@@ -85,6 +93,7 @@ export const GamePlay: React.FC = () => {
       <div className="flex-1 relative">
         <GameBoard 
           board={board} 
+          vertices={vertices}
           onCardPlace={handlePlaceCard}
           selectedCard={!!selectedCard}
         />
