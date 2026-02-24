@@ -1,10 +1,279 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Tutti Quantum Design System - Inspired by particle physics and CERN visualizations */
+
+@layer base {
+  :root {
+    /* Core backgrounds - Deep space navy */
+    --background: 222 47% 6%;
+    --foreground: 180 100% 95%;
+
+    /* Cards with subtle glow */
+    --card: 222 40% 10%;
+    --card-foreground: 180 100% 95%;
+
+    --popover: 222 40% 12%;
+    --popover-foreground: 180 100% 95%;
+
+    /* Primary - Vibrant Cyan/Teal (Tutti Quantum signature) */
+    --primary: 180 100% 45%;
+    --primary-foreground: 222 47% 6%;
+
+    /* Secondary - Deep purple for contrast */
+    --secondary: 260 60% 25%;
+    --secondary-foreground: 180 100% 95%;
+
+    /* Muted tones */
+    --muted: 222 40% 15%;
+    --muted-foreground: 180 30% 60%;
+
+    /* Accent - Electric magenta */
+    --accent: 320 100% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive */
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 180 50% 20%;
+    --input: 222 40% 15%;
+    --ring: 180 100% 45%;
+
+    --radius: 0.75rem;
+
+    /* Particle Colors - for game cards */
+    --particle-quark: 210 100% 55%;
+    --particle-antiquark: 210 100% 35%;
+    --particle-electron: 320 100% 55%;
+    --particle-positron: 320 80% 65%;
+    --particle-photon: 50 100% 55%;
+    --particle-gluon: 25 100% 55%;
+    --particle-higgs: 140 70% 45%;
+
+    /* Glows and effects */
+    --glow-primary: 0 0 30px hsl(180 100% 45% / 0.5);
+    --glow-accent: 0 0 30px hsl(320 100% 55% / 0.5);
+    --glow-success: 0 0 20px hsl(140 70% 45% / 0.4);
+    --glow-warning: 0 0 20px hsl(50 100% 55% / 0.4);
+
+    /* Sidebar */
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 180 100% 95%;
+    --sidebar-primary: 180 100% 45%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 260 60% 25%;
+    --sidebar-accent-foreground: 180 100% 95%;
+    --sidebar-border: 180 50% 15%;
+    --sidebar-ring: 180 100% 45%;
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 180 100% 95%;
+    --card: 222 40% 10%;
+    --card-foreground: 180 100% 95%;
+    --popover: 222 40% 12%;
+    --popover-foreground: 180 100% 95%;
+    --primary: 180 100% 45%;
+    --primary-foreground: 222 47% 6%;
+    --secondary: 260 60% 25%;
+    --secondary-foreground: 180 100% 95%;
+    --muted: 222 40% 15%;
+    --muted-foreground: 180 30% 60%;
+    --accent: 320 100% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 180 50% 20%;
+    --input: 222 40% 15%;
+    --ring: 180 100% 45%;
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 180 100% 95%;
+    --sidebar-primary: 180 100% 45%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 260 60% 25%;
+    --sidebar-accent-foreground: 180 100% 95%;
+    --sidebar-border: 180 50% 15%;
+    --sidebar-ring: 180 100% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    @apply font-bold tracking-wide;
+  }
+}
+
+@layer components {
+  /* Neon glow text effect */
+  .text-glow {
+    text-shadow: 0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary)), 0 0 40px hsl(var(--primary) / 0.5);
+  }
+
+  .text-glow-accent {
+    text-shadow: 0 0 10px hsl(var(--accent)), 0 0 20px hsl(var(--accent)), 0 0 40px hsl(var(--accent) / 0.5);
+  }
+
+  /* Card glow effect */
+  .card-glow {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3), inset 0 0 20px hsl(var(--primary) / 0.1);
+  }
+
+  .card-glow-accent {
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.3), inset 0 0 20px hsl(var(--accent) / 0.1);
+  }
+
+  /* Particle card styles */
+  .particle-card {
+    @apply relative rounded-lg overflow-hidden transition-all duration-300;
+    border: 2px solid transparent;
+    background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(222 40% 8%) 100%);
+  }
+
+  .particle-card:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .particle-card.quark {
+    border-color: hsl(var(--particle-quark));
+    box-shadow: 0 0 15px hsl(var(--particle-quark) / 0.4);
+  }
+
+  .particle-card.antiquark {
+    border-color: hsl(var(--particle-antiquark));
+    box-shadow: 0 0 15px hsl(var(--particle-antiquark) / 0.4);
+  }
+
+  .particle-card.electron {
+    border-color: hsl(var(--particle-electron));
+    box-shadow: 0 0 15px hsl(var(--particle-electron) / 0.4);
+  }
+
+  .particle-card.positron {
+    border-color: hsl(var(--particle-positron));
+    box-shadow: 0 0 15px hsl(var(--particle-positron) / 0.4);
+  }
+
+  .particle-card.photon {
+    border-color: hsl(var(--particle-photon));
+    box-shadow: 0 0 15px hsl(var(--particle-photon) / 0.4);
+  }
+
+  .particle-card.gluon {
+    border-color: hsl(var(--particle-gluon));
+    box-shadow: 0 0 15px hsl(var(--particle-gluon) / 0.4);
+  }
+
+  .particle-card.higgs {
+    border-color: hsl(var(--particle-higgs));
+    box-shadow: 0 0 15px hsl(var(--particle-higgs) / 0.4);
+  }
+
+  /* Game board grid */
+  .game-grid {
+    display: grid;
+    gap: 4px;
+    background: linear-gradient(135deg, hsl(222 40% 8%) 0%, hsl(222 47% 4%) 100%);
+    @apply rounded-xl p-4;
+    box-shadow: inset 0 0 30px hsl(var(--primary) / 0.1);
+  }
+
+  /* Animated background particles */
+  .particles-bg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .particles-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, hsl(var(--accent) / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, hsl(var(--secondary) / 0.05) 0%, transparent 70%);
+    animation: pulseBackground 8s ease-in-out infinite;
+  }
+
+  @keyframes pulseBackground {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* Score badge */
+  .score-badge {
+    @apply inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-bold;
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(180 100% 35%) 100%);
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.5);
+  }
+
+  .score-badge.negative {
+    background: linear-gradient(135deg, hsl(var(--destructive)) 0%, hsl(0 85% 45%) 100%);
+    box-shadow: 0 0 15px hsl(var(--destructive) / 0.5);
+  }
+
+  /* Menu button hover effect */
+  .menu-button {
+    @apply relative overflow-hidden;
+  }
+
+  .menu-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.2) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+
+  .menu-button:hover::before {
+    transform: translateX(100%);
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.6); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
 }

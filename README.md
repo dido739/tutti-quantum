@@ -1,194 +1,91 @@
-# Tutti Quantum 🎮⚛️
+# Tutti Quantum
 
-A web-based version of the Tutti Quantum board game - a quantum physics card game where players build Feynman diagrams by connecting particle cards to score points.
+Tutti Quantum is a multiplayer strategy card game inspired by Feynman-style particle interactions.
 
-![Game Setup](https://github.com/user-attachments/assets/1c5e558f-9005-4fb5-8c82-331fb07ed019)
-![Gameplay](https://github.com/user-attachments/assets/79bfafed-7582-456f-be60-808205a93bca)
-![Card Placed](https://github.com/user-attachments/assets/9ec5c699-e711-4412-9658-c65d22847f9a)
+Players build diagrams by placing and rotating particle cards, creating legal vertices for points, and avoiding invalid combinations. The app supports English and Bulgarian UI.
 
-## 🌟 About the Game
+## Features
 
-Tutti Quantum is a 2-4 player card game about quantum mechanics where players connect elementary particle cards to build valid Feynman diagrams. The game teaches quantum physics concepts while being fun and competitive.
+- **Game modes**: Local multiplayer, AI game, and online multiplayer
+- **Rules engine**: Legal placement validation + auto-orient helper
+- **Scoring**: Vertex/connection-based scoring with penalties for invalid combinations
+- **AI**: Difficulty levels with legal-move selection
+- **Realtime online play**: Supabase-backed sessions and sync
+- **Auth**: Supabase email/password authentication
+- **Bilingual UI**: English/Bulgarian language switching
 
-**🎮 Current Status: FULLY PLAYABLE!**
+## Tech Stack
 
-The web version is now feature-complete for basic gameplay! You can play full games from start to finish with:
-- Complete setup and player management
-- Interactive card placement with intelligent position detection
-- Real-time scoring based on vertex validation
-- Both competitive and cooperative modes
-- End game screen with results and statistics
-- Reference guide for rules and scoring
+- React + TypeScript + Vite
+- Tailwind CSS + shadcn/ui
+- Supabase (`auth`, `database`, `realtime`)
+- Vitest + Testing Library
 
-## 🎯 Features
+## Getting Started
 
-### ✅ Implemented
-- **Complete Game Flow** - From setup to end game with full loop
-- **Game Setup Screen** - Select game mode (Competitive/Cooperative) and number of players (2-4)
-- **44 Particle Cards** - Complete deck with Quarks, Electrons, Gluons, Photons, and Higgs Bosons
-- **Hexagonal Card Display** - Beautiful color-coded cards with particle symbols and arrows
-- **Interactive Game Board** - Click-to-place system with valid position indicators
-- **Intelligent Card Placement** - Automatic neighbor detection and valid position calculation
-- **Turn-Based Gameplay** - Players take turns placing cards with automatic advancement
-- **Vertex Detection** - Automatic detection of 3-card vertices
-- **Scoring System** - Real-time score calculation based on vertex validity
-- **Card Management** - Shuffle, deal, and draw functionality
-- **Player Hands** - Display cards for each player with selection
-- **Score Tracking** - Real-time score display for all players
-- **Reference Guide** - In-game modal with all rules, particles, and scoring
-- **End Game Screen** - Final standings, statistics, and play again option
-- **Zoom & Pan** - Interactive board controls for large diagrams
-- **Responsive Design** - Works on desktop, tablet, and mobile
-
-### 🚧 Future Enhancements
-- Card rotation selection (60-degree increments)
-- Enhanced arrow flow validation visualization
-- Visual vertex indicators on the board
-- Advanced scoring (loops, sub-diagrams)
-- Undo/redo functionality
-- Save/load game state
-- Smooth animations
-- Sound effects and music
-- Tutorial mode
-- Online multiplayer
-- AI opponents
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ and npm
-
-### Installation
+### 1) Install dependencies
 
 ```bash
-# Clone the repository
-git clone https://github.com/dido739/tutti-quantum.git
-cd tutti-quantum
-
-# Install dependencies
 npm install
+```
 
-# Start development server
+### 2) Configure environment variables
+
+Create a `.env` file (or copy from `.env.example`) with:
+
+```dotenv
+VITE_SUPABASE_PROJECT_ID="your-project-id"
+VITE_SUPABASE_URL="https://your-project-id.supabase.co"
+VITE_SUPABASE_ANON_KEY="your-anon-key"
+# Optional legacy alias:
+# VITE_SUPABASE_PUBLISHABLE_KEY="your-anon-key"
+```
+
+### 3) Run the app
+
+```bash
 npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
 ```
 
-### Development
-The development server runs on `http://localhost:5173`
+### 4) Run tests
 
-## 🎲 How to Play
-
-### Game Setup
-1. Choose your game mode:
-   - **Competitive**: Players compete for the highest score
-   - **Cooperative**: Work together to maximize team score
-
-2. Select number of players (2-4)
-
-3. Enter player names
-
-### Competitive Mode
-- Each player receives cards based on player count:
-  - 2 players: 9 cards each
-  - 3 players: 6 cards each
-  - 4 players: 4 cards each
-- Plus 1 secret card revealed at the end
-- Players take turns placing cards to build the diagram
-- Score points for valid vertices
-- Highest score wins!
-
-### Cooperative Mode
-- Players work together to build the best diagram
-- Communicate strategically (without revealing exact cards)
-- Goal: Score >38 points for a "Nobel Prize"!
-
-### Scoring
-Valid vertices award points based on particle combinations:
-- **2 points**: Quark-Gluon-Quark, Electron-Photon-Electron
-- **3 points**: Quark-Photon-Quark, Quark-Gluon-Photon, Electron-Gluon-Photon
-- **4 points**: Quark-Higgs-Quark, Electron-Higgs-Electron
-- **6 points**: Quark-Gluon-Higgs, Electron-Photon-Higgs
-
-Invalid vertices: **-1 point** (only 1-2 particle types, or arrows don't flow)
-
-## 🎨 Technology Stack
-
-### Frontend
-- **React 18** - UI framework
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Styling and design system
-- **Zustand** - State management
-- **Framer Motion** - Animations
-- **React Icons** - UI icons
-
-### Build Tools
-- **Vite** - Fast development and building
-- **PostCSS** - CSS processing
-
-## 🗂️ Project Structure
-
-```
-src/
-├── components/
-│   ├── board/          # Game board components
-│   ├── cards/          # Card display components
-│   ├── game/           # Game flow components
-│   └── ui/             # UI components
-├── data/               # Card data and configurations
-├── store/              # Zustand state management
-├── types/              # TypeScript type definitions
-└── utils/              # Utility functions
-    ├── hexGrid.ts      # Hexagonal grid logic
-    └── vertexValidation.ts  # Vertex validation logic
+```bash
+npm run test
 ```
 
-## 🧪 Game Components
+## Supabase Setup
 
-### Particle Cards (44 total)
-- **13 Quarks** (blue) - Up, Down, Charm, Strange, Top, Bottom
-- **8 Electrons** (pink) - Electron, Positron, Muon, Antimuon, Tau, Antitau
-- **12 Gluons** (purple)
-- **7 Photons** (yellow)
-- **4 Higgs Bosons** (gold)
+This project expects a configured Supabase project with the SQL migrations in `supabase/migrations` applied.
 
-Each card has 6 edges with arrows indicating interaction directions.
+If you use the Supabase CLI:
 
-## 📚 Resources
+```bash
+npx supabase login
+npx supabase link --project-ref <your-project-ref>
+npx supabase db push
+```
 
-- Original game: [un-solved.com/game](https://un-solved.com/game)
-- Learn about Feynman diagrams and particle physics
+## Available Scripts
 
-## 🤝 Contributing
+- `npm run dev` - start Vite dev server
+- `npm run build` - production build
+- `npm run build:dev` - development-mode build
+- `npm run preview` - preview built app
+- `npm run lint` - run ESLint
+- `npm run test` - run tests once
+- `npm run test:watch` - run tests in watch mode
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## Project Structure
 
-## 📝 License
+- `src/pages` - route pages (`Index`, `LocalGame`, `AIGame`, `OnlineGame`, etc.)
+- `src/components` - reusable UI and gameplay components
+- `src/lib` - core game logic and AI logic
+- `src/contexts` - auth and i18n contexts
+- `src/integrations/supabase` - Supabase client and types
+- `supabase/migrations` - database/RLS migrations
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## Notes
 
-## 🎓 Educational Value
-
-Tutti Quantum makes learning about particle physics fun! Through gameplay, you'll learn about:
-- Elementary particles (quarks, leptons, bosons)
-- Particle interactions
-- Feynman diagrams
-- Conservation laws in physics
-- The Standard Model of particle physics
-
-## 🏆 Cooperative Mode Scoring Benchmarks
-
-- **>38 points**: "You will probably win a real Nobel Prize!"
-- **35-38 points**: "You should consider doing a PhD in Particle Physics!"
-- **32-34 points**: "You almost have enough time and resources for real experimental physics!"
-- **29-31 points**: "You are starting to understand the secrets of fundamental particles, but you'll need to communicate better in the future!"
-- **26-28 points**: "The secrets of fundamental particles are complex! You need to spend more time studying to understand them."
-- **<26 points**: "You need to be more careful when playing with fundamental particles. Study more and try again!"
-
----
-
-Made with ❤️ and ⚛️ - Making quantum physics fun and accessible!
+- Online mode requires valid Supabase env values.
+- If registration or multiplayer writes fail, verify migrations and RLS policies are applied.
+- Language preference is persisted locally in the browser.
