@@ -25,7 +25,6 @@ import {
   shuffleDeck,
   placeCard,
   rotateCard,
-  autoOrientCardForPlacement,
   advanceGame,
 } from '@/lib/gameLogic';
 
@@ -351,16 +350,10 @@ export default function OnlineGame() {
 
     if (!session || !user || !selectedCard || !isMyTurn || !myPlayer) return;
     
-    const orientedCard = autoOrientCardForPlacement(selectedCard, position, myPlayer.diagram);
-    if (!orientedCard) {
-      toast.error(t('online.invalidPlacement'));
-      return;
-    }
-    
     const gameState = session.game_state as any;
     
     // Place the card
-    const newDiagram = placeCard(orientedCard, position, myPlayer.diagram);
+    const newDiagram = placeCard(selectedCard, position, myPlayer.diagram);
     const newCenterCards = gameState.centerCards.filter((c: ParticleCardType) => c.id !== selectedCard.id);
     const { score, invalidVertices } = calculateScore(newDiagram);
     

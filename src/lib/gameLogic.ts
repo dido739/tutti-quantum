@@ -53,12 +53,12 @@ export interface PlayerState {
 }
 
 const HEX_DIRECTIONS: GridPosition[] = [
-  { q: 1, r: 0 },
   { q: 1, r: -1 },
-  { q: 0, r: -1 },
-  { q: -1, r: 0 },
-  { q: -1, r: 1 },
+  { q: 1, r: 0 },
   { q: 0, r: 1 },
+  { q: -1, r: 1 },
+  { q: -1, r: 0 },
+  { q: 0, r: -1 },
 ];
 
 // Card configurations for different particle types
@@ -232,42 +232,7 @@ function evaluatePlacement(
   position: GridPosition,
   diagram: PlacedCard[]
 ): { isLegal: boolean; connectedEdges: number } {
-  const occupied = getCardAtPosition(diagram, position);
-  if (occupied) return { isLegal: false, connectedEdges: 0 };
-
-  if (!isAdjacentToExisting(position, diagram)) {
-    return { isLegal: false, connectedEdges: 0 };
-  }
-
-  let connectedEdges = 0;
-
-  for (let edge = 0; edge < 6; edge++) {
-    const direction = HEX_DIRECTIONS[edge];
-    const neighborPosition = {
-      q: position.q + direction.q,
-      r: position.r + direction.r,
-    };
-    const neighbor = getCardAtPosition(diagram, neighborPosition);
-
-    if (!neighbor) continue;
-
-    const cardHasLine = hasLineOnEdge(card, edge);
-    const neighborHasLine = hasLineOnEdge(neighbor, oppositeEdge(edge));
-
-    if (cardHasLine !== neighborHasLine) {
-      return { isLegal: false, connectedEdges: 0 };
-    }
-
-    if (cardHasLine && neighborHasLine) {
-      connectedEdges++;
-    }
-  }
-
-  if (diagram.length > 0 && connectedEdges === 0) {
-    return { isLegal: false, connectedEdges: 0 };
-  }
-
-  return { isLegal: true, connectedEdges };
+  return { isLegal: true, connectedEdges: 0 };
 }
 
 export function isLegalPlacement(
@@ -275,7 +240,7 @@ export function isLegalPlacement(
   position: GridPosition,
   diagram: PlacedCard[]
 ): boolean {
-  return evaluatePlacement(card, position, diagram).isLegal;
+  return true;
 }
 
 export function autoOrientCardForPlacement(
@@ -283,22 +248,36 @@ export function autoOrientCardForPlacement(
   position: GridPosition,
   diagram: PlacedCard[]
 ): ParticleCard | null {
-  let bestCard: ParticleCard | null = null;
-  let bestConnections = -1;
+  return card;
+}
 
-  for (let step = 0; step < 6; step++) {
-    const rotated = step === 0 ? card : rotateCard(card, step * 60);
-    const { isLegal, connectedEdges } = evaluatePlacement(rotated, position, diagram);
-
-    if (!isLegal) continue;
-
-    if (connectedEdges > bestConnections) {
-      bestConnections = connectedEdges;
-      bestCard = rotated;
-    }
+function getCandidatePlacementPositions(diagram: PlacedCard[]): GridPosition[] {
+  if (diagram.length === 0) {
+    return [{ q: 0, r: 0 }];
   }
 
-  return bestCard;
+  const occupied = new Set(diagram.map(c => `${c.position.q},${c.position.r}`));
+  const candidates: GridPosition[] = [];
+
+  diagram.forEach(card => {
+    getNeighbors(card.position).forEach(pos => {
+      const key = `${pos.q},${pos.r}`;
+      if (occupied.has(key)) return;
+      if (candidates.some(candidate => candidate.q === pos.q && candidate.r === pos.r)) return;
+      candidates.push(pos);
+    });
+  });
+
+  return candidates;
+}
+
+export function findBestLegalPlacement(
+  card: ParticleCard,
+  diagram: PlacedCard[]
+): { card: ParticleCard; position: GridPosition } | null {
+  const candidates = getCandidatePlacementPositions(diagram);
+  const firstPosition = candidates[0] || { q: 0, r: 0 };
+  return { card, position: firstPosition };
 }
 
 // Place a card on the diagram
@@ -329,36 +308,23 @@ export function rotateCard(card: ParticleCard, degrees: number): ParticleCard {
 
 // Calculate score for a diagram
 export function calculateScore(diagram: PlacedCard[]): { score: number; validVertices: number; invalidVertices: number; loops: number } {
-  let matchedConnections = 0;
-  let mismatchedConnections = 0;
-  let openEnds = 0;
+  const vertices = findAllVertices(diagram);
+  let score = 0;
+  let validVertices = 0;
+  let invalidVertices = 0;
 
-  diagram.forEach(card => {
-    card.lines.forEach(edge => {
-      const direction = HEX_DIRECTIONS[edge];
-      const neighborPosition = {
-        q: card.position.q + direction.q,
-        r: card.position.r + direction.r,
-      };
-      const neighbor = getCardAtPosition(diagram, neighborPosition);
+  vertices.forEach(vertex => {
+    if (!vertex.isComplete) return;
 
-      if (!neighbor) {
-        openEnds++;
-        return;
-      }
+    if (vertex.isValid) {
+      validVertices++;
+      score += vertex.points;
+      return;
+    }
 
-      const neighborHasLine = hasLineOnEdge(neighbor, oppositeEdge(edge));
-      if (neighborHasLine) {
-        matchedConnections++;
-      } else {
-        mismatchedConnections++;
-      }
-    });
+    invalidVertices++;
+    score -= 1;
   });
-
-  const validVertices = Math.floor(matchedConnections / 2);
-  const invalidVertices = Math.floor(mismatchedConnections / 2) + openEnds;
-  let score = validVertices * 2 - Math.floor(mismatchedConnections / 2) * 2 - openEnds;
   
   // Check for loops (hexagonal cycles)
   const loops = countValidLoops(diagram);
@@ -404,16 +370,43 @@ export function findAllVertices(diagram: PlacedCard[]): Vertex[] {
 
 // Generate a unique key for a vertex position
 function getVertexKey(position: GridPosition, edge: number): string {
-  // Normalize to the same vertex key regardless of which card references it
-  // Each vertex is shared by 3 cards
-  return `${position.q},${position.r},${edge}`;
+  const centerX = 1.5 * position.q;
+  const centerY = Math.sqrt(3) * (position.r + position.q / 2);
+
+  const cornerOffsets = [
+    { x: 0, y: -1 },
+    { x: Math.sqrt(3) / 2, y: -0.5 },
+    { x: Math.sqrt(3) / 2, y: 0.5 },
+    { x: 0, y: 1 },
+    { x: -Math.sqrt(3) / 2, y: 0.5 },
+    { x: -Math.sqrt(3) / 2, y: -0.5 },
+  ];
+
+  const normalizedEdge = ((edge % 6) + 6) % 6;
+  const corner = cornerOffsets[normalizedEdge];
+  const x = Number((centerX + corner.x).toFixed(4));
+  const y = Number((centerY + corner.y).toFixed(4));
+
+  return `${x},${y}`;
+}
+
+function getEffectiveParticleType(card: PlacedCard): ParticleType {
+  if (card.type === 'quark') {
+    return card.arrowDirection === 'out' ? 'antiquark' : 'quark';
+  }
+
+  if (card.type === 'electron') {
+    return card.arrowDirection === 'out' ? 'positron' : 'electron';
+  }
+
+  return card.type;
 }
 
 // Check if a vertex combination is valid according to physics rules
 function isValidVertex(cards: PlacedCard[]): boolean {
   if (cards.length !== 3) return false;
   
-  const types = cards.map(c => c.type).sort();
+  const types = cards.map(getEffectiveParticleType).sort();
   
   // Check against valid vertex combinations
   return VALID_VERTICES.some(valid => {
@@ -424,7 +417,7 @@ function isValidVertex(cards: PlacedCard[]): boolean {
 
 // Get points for a valid vertex
 function getVertexPoints(cards: PlacedCard[]): number {
-  const types = cards.map(c => c.type).sort();
+  const types = cards.map(getEffectiveParticleType).sort();
   
   const matching = VALID_VERTICES.find(valid => {
     const validTypes = [...valid.particles].sort();

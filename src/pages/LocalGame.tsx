@@ -9,7 +9,6 @@ import {
   rotateCard,
   calculateScore,
   advanceGame,
-  autoOrientCardForPlacement,
 } from '@/lib/gameLogic';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { GameBoard } from '@/components/GameBoard';
@@ -80,14 +79,8 @@ export default function LocalGame() {
 
     const currentPlayer = gameState.players[gameState.currentPlayerIndex];
 
-    const orientedCard = autoOrientCardForPlacement(selectedCard, position, currentPlayer.diagram);
-    if (!orientedCard) {
-      toast.error(t('local.invalidPlacement'));
-      return;
-    }
-
     // Place the card
-    const newDiagram = placeCard(orientedCard, position, currentPlayer.diagram);
+    const newDiagram = placeCard(selectedCard, position, currentPlayer.diagram);
     
     // Remove card from center
     const newCenterCards = gameState.centerCards.filter(c => c.id !== selectedCard.id);
@@ -128,8 +121,6 @@ export default function LocalGame() {
     // Add secret cards to diagrams
     const finalPlayers = state.players.map(player => {
       if (player.secretCard) {
-        // For now, just add it to the first valid position
-        // In a real game, player would choose where to place it
         const newDiagram = [...player.diagram];
         if (newDiagram.length > 0) {
           const lastCard = newDiagram[newDiagram.length - 1];
