@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { PlacedCard, GridPosition, getNeighbors } from '@/lib/gameLogic';
+import { PlacedCard, GridPosition } from '@/lib/gameLogic';
 import { ParticleCard } from './ParticleCard';
 import { cn } from '@/lib/utils';
 
@@ -40,24 +40,17 @@ export function GameBoard({
   const validPositions = useMemo(() => {
     if (!highlightValidPositions) return new Set<string>();
     const positions = new Set<string>();
-    if (diagram.length === 0) {
-      for (let q = -1; q <= 1; q++) {
-        for (let r = -1; r <= 1; r++) {
+
+    for (let r = bounds.minR; r <= bounds.maxR; r++) {
+      for (let q = bounds.minQ; q <= bounds.maxQ; q++) {
+        if (!diagram.some(c => c.position.q === q && c.position.r === r)) {
           positions.add(`${q},${r}`);
         }
       }
-    } else {
-      diagram.forEach(card => {
-        getNeighbors(card.position).forEach(pos => {
-          const key = `${pos.q},${pos.r}`;
-          if (!diagram.some(c => c.position.q === pos.q && c.position.r === pos.r)) {
-            positions.add(key);
-          }
-        });
-      });
     }
+
     return positions;
-  }, [diagram, highlightValidPositions]);
+  }, [bounds.maxQ, bounds.maxR, bounds.minQ, bounds.minR, diagram, highlightValidPositions]);
 
   // Flat-top hex: width = cellW, height = cellW * sqrt(3)/2
   // For tight tiling: col step = 3/4 * cellW, row step = cellH (no gaps)

@@ -1,0 +1,808 @@
+Welcome to the world of fundamental particles!
+Here, the rules of Quantum Mechanics and
+Einstein’s Relativity make particles appear
+from nowhere, travel through walls and behave
+in extraordinary ways! Will you ever be able
+to understand how it functions? With Tutti
+Quantum, you’ll learn seven simple rules for
+connecting particles so you can build the
+most extravagant Feynman diagram. Each
+graph corresponds to a real-world particle
+phenomenon, whether that is an explanation
+of the blue sky or the discovery of the Higgs
+boson. The rarest processes are worth a Nobel
+prize… and if you fi nd them, you’ll win – the
+game, that is!
+TUTTI EN
+QUANTUM
+GAME COMPONENTS
+• 44 elementary particle cards:
+GOAL OF THE GAME
+The game can be played either competitively or
+cooperatively, but we suggest starting with the
+competitive mode as you familiarize yourself
+with the rules. In both modes, your goal is to
+place elementary particles together to form
+a Feynman diagram, and so earn yourself the
+most points, and the winner will have found the
+rarest process in nature.
+COMPETITIVE MODE
+The players compete to score the most points.
+The more points you score, the rarest the
+process diagram is.
+SETUP
+• Give each player a reference card.
+• Shuffl e all the particle cards together. If there
+are 3 players, randomly discard 5 cards and
+put them back in the box: These won’t be
+used.
+• Give each player one card: This card is kept
+secret, and will be added to your diagram after
+the fi nal round. Remember it well!
+• Place the remaining particle cards face down
+in a draw pile. Leave enough space for each
+player to make a diagram in front of them.
+• Sort the score tokens by type and fl ip half of
+them so that all 7 different sides are visible.
+Scoring is not limited to the upturned sides:
+You can use the reverse side of the tokens.
+• Draw the appropriate number of cards and
+place them face up in the center of the table.
+The chart below specifi es the number of cards
+revealed and the number of rounds played:
+PLAYERS CARDS ROUNDS
+2 3 14
+3 4 9
+4 5 8
+The youngest player will play fi rst, so takes the
+fi rst-player pawn.
+HOW TO PLAY
+Each player will make their own diagram. The
+fi rst player chooses an upturned particle card
+from the center, and immediately places it in
+their diagram. Play continues clockwise, with
+each player taking a card in the same way,
+and the fi rst player will take the fi nal card. The
+fi rst-player pawn then passes to the next player
+clockwise, new cards are drawn and placed face
+up on the table, and the next round begins.
+The game ends when there are no more cards
+to draw. All players reveal their secret card and
+place it in their diagram.
+A complete vertex is a group of 3 cards
+arranged around the same point. Some vertices
+are valid – since they represent how particles
+interact with each other – and so will give you
+points; however, invalid vertices will instead
+lose you points. When you complete a vertex by
+playing a third card around it, you immediately
+place the scoring token on it, to show the points
+earned. See the “Scoring” section below.
+END OF THE GAME
+Rules for playing cards
+The players place their fi rst card somewhere in
+front of them. All subsequent cards must be
+placed adjacent to at least one card already on
+the table. The cards must be placed in such a
+way that the lines meet at the points, which are
+called vertices (vertices is the plural of vertex).
+The game ends once all the cards have been
+drawn and placed, and the players should all
+have the same number of particles in front of
+them. Everyone counts their points, and the
+winner is the one with the most points. In the
+event of a tie, the player with the fewest invalid
+vertices wins. If the players are still tied, the
+winner is the one with the most vertices worth
+6 points, then 4 points, 3 points and then
+fi nally, 2 points.
+SCORING
+You score points for every valid complete vertex
+in your diagram. The vertices worth more points
+represent rarer natural processes.
+The illustration on the right shows every
+possible complete vertex.
+All other complete vertices are invalid, and so
+are vertices composed of only 2 different types
+of particle. At the end of the game you will
+lose 1 point per invalid vertex, since these do
+not appear in nature. Incomplete vertices that
+are composed of 2 of the same particle are
+considered to be valid, but do not give you any
+points. Vertices with only 1 particle are ignored
+and they don’t lose you points.
+Important: The electrons and quarks are
+electrically charged particles, indicated by the
+arrow on those cards. They must be placed in
+such a way that the arrow continues in the same
+direction from one card to the next, otherwise
+they will create an invalid vertex.
+COMPLETE VALID VERTICES
+TUTTI
+QUANTUM
+TUTTI
+QUANTUM
+TUTTI
+QUANTUM
+POSITRON
+ELECTRON
+ee+
+ee+
+TUTTI
+QUANTUM
+TUTTI
+QUANTUM
+TUTTI
+QUANTUM
+TUTTI
+QUANTUM
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+GLUON
+GLUON
+g
+g g
+g
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+3
+3
+3
+2 2
+2
+2
+2
+4
+4
+3
+3
+3
+More information about
+un-solved, rules in other
+languages and a useful
+document are available at:
+un-solved.com/game
+2 pts 2 pts
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+PHOTON
+PHOTON
+GLUON
+GLUON
+g
+g g
+g
+6 pts
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+3 pts 2 pts
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+GLUON
+GLUON
+g
+g g
+g
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+GLUON
+GLUON
+g
+g g
+g
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+GLUON
+GLUON
+g
+g g
+g
+4 pts 3 pts
+POSITRON
+ELECTRON
+ee+
+ee+
+POSITRON
+ELECTRON
+ee+
+ee+
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+PHOTON
+PHOTON
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+4 reference cards 1 fi rst-player pawn
+42 score tokens
+PHOTON
+PHOTON
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+7 photons 4 Higgs bosons
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+POSITRON
+ELECTRON
+ee+
+ee+
+GLUON
+GLUON
+g
+g g
+g
+13 quarks 8 electrons 12 gluons
+Front
+Back
+x 19 x 14 x 8 x 1
+2 2
+3
+4
+2 3
+GLUON
+GLUON
+g
+g g
+g
+GLUON
+GLUON
+g
+g g
+g
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+GLUON
+GLUON
+g
+g g
+g
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+GLUON
+GLUON
+g
+g g
+g
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+GLUON
+GLUON
+g
+g g
+g
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+PHOTON
+PHOTON
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+PHOTON
+PHOTON
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+PHOTON
+PHOTON
+POSITRON
+ELECTRON
+ee+
+ee+
+Complete valid
+(3 pts)
+Incomplete valid
+(0 pt)
+Complete invalid
+(-1 pt)
+Complete invalid
+(-1 pt)
+Incomplete invalid (-1 pt)
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+PHOTON
+PHOTON
+POSITRON
+ELECTRON
+ee+
+ee+
+ADVANCED SCORING
+You can score 2 bonus points for every valid
+loop in your diagram at the end of the game. A
+loop is a closed hexagon composed of 6 cards.
+For a loop to be valid, it must be composed of 6
+valid (complete or not) vertices. You do not get
+bonus points for invalid loops.
+VALID LOOP
+EXPERT SCORING
+Are you now an expert in particle physics and
+ready to go to the next level? Over the course
+of the game, try to form the following subdiagrams.
+Count your points in the usual way
+at the end of the game, then add points for the
+sub-diagrams.
+1. Why atoms stay together: In the world of
+particles, the electric force is carried by
+photons. It keeps electrons and quarks
+together in atoms.
+2. The blue sky: Light is made up of photons,
+and this diagram illustrates how it is refl ected
+by matter – i.e. quarks and electrons. This
+process is more likely to appear with blue light,
+hence the sky’s color.
+3. Nobel Prize 2004: Diagrams like this one
+have shown that the force inside nuclei is
+stronger when the distance is longer and
+gets weaker and weaker as the distance gets
+shorter, in a similar way to a spring being
+pulled out.
+4. The discovery of the Higgs boson: In 2012, a
+new particle was discovered at CERN through
+its decay into two photons, which are light
+particles.
+Important: Due to the number of cards needed
+to build these diagrams, this variant only works
+with 2 players (when playing competitively).
+If you have more than 2 players, you could
+divide the players into 2 teams, or instead play
+cooperatively.
+COOPERATIVE MODE
+In this mode, the players all work together on
+the same diagram, and the goal is to make a
+valid diagram worth as many points as possible.
+SETUP
+• Shuffl e all the particle cards together and
+place them on the table in a facedown draw
+pile.
+• Draw the top card from the pile and place it on
+the table: This starts the common diagram.
+• Each player draws 2 cards and puts them in
+their hand.
+• Discard the next card from the draw pile
+without revealing it.
+HOW TO PLAY
+The players must never talk about the cards in
+their hand. They may tell the others where they
+would like to play a card or where the others
+should not play, but they are not allowed to be
+more precise.
+After separately looking at their cards, the
+players decide together who will begin. They
+take turns clockwise, with each player placing
+one card from their hand into the common
+diagram. The placement and scoring rules are
+the same as for the competitive mode. Once a
+player has placed a card, they decide which of
+the following two options to play:
+— Draw 1 card so your hand goes back up to 2
+cards AND discard the top card from the draw
+pile without revealing it.
+— Discard the card left in your hand without
+revealing it AND then draw 2 new cards.
+If the draw pile is empty, skip this step and play
+until everyone has played all the cards in their
+hands.
+END OF THE GAME
+When all the players are out of cards, the
+game ends. If the diagram contains invalid
+vertices, the players lose the game. Reminder:
+Incomplete vertices featuring the same particle
+twice are valid, but all other incomplete vertices
+are invalid.
+If your diagram is entirely valid, you have
+won the game! Count how many points your
+diagram is worth and check how well you did in
+the table below:
+SCORE RESULT
+> 38 points
+You will probably win
+the next Nobel Prize!
+35-38 points
+You should consider
+doing a PhD in Particle
+Physics!
+32-34 points
+You must have
+worked as a team
+of real experimental
+physicists!
+29-31 points
+You are starting to
+understand the secrets
+of fundamental
+particles, but you’ll
+need to communicate
+better in the future!
+26-28 points
+The secrets of
+fundamental particles
+lie before you, but you
+need to spend more
+time studying in order
+to understand them.
+< 26 points
+You need to be more
+careful when playing
+around with subatomic
+particles. Study more
+and try again!
+Have you got the hang of the cooperative
+mode? Then try making loops and using
+the advanced scoring rules. Add even more
+challenge by embarking on one of the expert
+scoring “missions”!
+CREDITS
+Project idea and
+development
+Francesco Riva,
+Alexander Monin
+EPFL+ECAL LAB
+Director
+Nicolas Henchoz
+Project team of
+designers, engineers
+and psychologists
+Romain Collaud,
+Lara Défayes,
+Béatrice Durandard,
+Matthieu Girel,
+Yves Kalberer,
+Delphine Ribes,
+Lucas Sassoli,
+Andreas
+Sonderegger and
+Lazar Stojkovic
+Game development
+Helvetiq
+Funding
+Swiss National
+Science Foundation
+and University of
+Geneva, Physics
+Section
+Design &
+illustrations
+Ajša Zdravkovic
+Copy editing
+Board Game Circus
+(Harriet Cooper)
+2 pts
+3 pts
+2 pts
+4 pts
+PHOTON
+PHOTON
+PHOTON
+PHOTON
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+POSITRON
+ELECTRON
+ee+
+ee+
+3
+If this card was
+missing, this loop
+would be invalid.
+2
+4
+3
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+GLUON
+GLUON
+g
+g g
+g
+PHOTON
+PHOTON
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+PHOTON
+PHOTON
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+PHOTON
+PHOTON
+GLUON
+GLUON
+g
+g g
+g
+GLUON
+GLUON
+g
+g g
+g
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+GLUON
+GLUON
+g
+g g
+g
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+GLUON
+GLUON
+g
+g g
+g
+PHOTONPHOTON
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+POSITRON
+ELECTRON
+ee
+- e+
+e+
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+HIGGS BOSON
+HIGGS BOSON
+H
+H H
+H
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+PHOTON
+PHOTON
+TUTTI
+QUANTUM
+TUTTI
+QUANTUM
+TUTTI
+QUANTUM
+TUTTI
+QUANTUM
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+GLUON
+GLUON
+g
+g g
+g
+GLUON
+GLUON
+g
+g g
+g
+PHOTON
+PHOTON
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+POSITRON
+ELECTRON
+ee-
+e+
+e+
+Q
+Q Q
+Q
+QUARK
+ANTIQUARK
+3
+3
+3
+2 2
+2
+2
+2
+4
+4
+3
+3
+3

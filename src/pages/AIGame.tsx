@@ -9,7 +9,6 @@ import {
   rotateCard,
   calculateScore,
   advanceGame,
-  autoOrientCardForPlacement,
 } from '@/lib/gameLogic';
 import { findBestMove, AIDifficulty } from '@/lib/aiPlayer';
 import { ParticleBackground } from '@/components/ParticleBackground';
@@ -141,13 +140,7 @@ export default function AIGame() {
 
     const currentPlayer = gameState.players[0];
 
-    const orientedCard = autoOrientCardForPlacement(selectedCard, position, currentPlayer.diagram);
-    if (!orientedCard) {
-      toast.error(t('ai.invalidPlacement'));
-      return;
-    }
-
-    const newDiagram = placeCard(orientedCard, position, currentPlayer.diagram);
+    const newDiagram = placeCard(selectedCard, position, currentPlayer.diagram);
     const newCenterCards = gameState.centerCards.filter(c => c.id !== selectedCard.id);
     const { score, invalidVertices } = calculateScore(newDiagram);
 
@@ -177,10 +170,13 @@ export default function AIGame() {
   const handleGameEnd = (state: GameState) => {
     // Calculate final scores with secret cards
     const finalPlayers = state.players.map(player => {
-      if (player.secretCard && player.diagram.length > 0) {
-        const lastCard = player.diagram[player.diagram.length - 1];
-        const newPos = { q: lastCard.position.q + 1, r: lastCard.position.r };
-        const newDiagram = [...player.diagram, { ...player.secretCard, position: newPos }];
+      if (player.secretCard) {
+        const newDiagram = [...player.diagram];
+        if (newDiagram.length > 0) {
+          const lastCard = newDiagram[newDiagram.length - 1];
+          const newPos = { q: lastCard.position.q + 1, r: lastCard.position.r };
+          newDiagram.push({ ...player.secretCard, position: newPos });
+        }
         const { score, invalidVertices } = calculateScore(newDiagram);
         return { ...player, diagram: newDiagram, score, invalidVertices };
       }
