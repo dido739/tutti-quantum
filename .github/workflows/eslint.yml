@@ -26,18 +26,19 @@ jobs:
       contents: read
       security-events: write
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    steps:
+       steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
-          npm install
-          # Инсталираме форматира за SARIF, ако не е в package.json
-          npm install @microsoft/eslint-formatter-sarif --save-dev
+          npm install --legacy-peer-deps
+          # Инсталираме форматира за SARIF изрично
+          npm install @microsoft/eslint-formatter-sarif@3.1.0 --save-dev
 
       - name: Run ESLint
         run: |
+          # Премахнати са --ext и --config, тъй като v9 ги управлява автоматично чрез eslint.config.js
           npx eslint . \
             --format @microsoft/eslint-formatter-sarif \
             --output-file eslint-results.sarif
@@ -47,3 +48,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: eslint-results.sarif
+          wait-for-processing: true
