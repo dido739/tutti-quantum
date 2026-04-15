@@ -6,7 +6,7 @@ export function LanguageSwitcher() {
   const { language, setLanguage, t } = useI18n();
 
   return (
-    <div className="fixed right-4 top-4 z-[60] flex items-center gap-1 rounded-full border border-border/50 bg-background/80 p-1 backdrop-blur-sm">
+    <div className="fixed bottom-3 right-3 z-[60] flex items-center gap-1 rounded-full border border-border/50 bg-background/80 p-1 backdrop-blur-sm sm:right-4 md:bottom-auto md:top-4">
       <Languages className="w-4 h-4 text-muted-foreground ml-1" />
       <Button
         variant={language === 'en' ? 'default' : 'ghost'}
