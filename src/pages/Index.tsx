@@ -27,7 +27,7 @@ export default function Index() {
             <span className="font-display text-xl font-bold text-glow">TUTTI QUANTUM</span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 md:pr-28">
             {loading ? (
               <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
             ) : user ? (
