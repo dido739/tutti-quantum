@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { I18nProvider } from "@/contexts/I18nContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import { Analytics } from "@vercel/analytics/react";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -25,6 +26,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <Analytics />
+      <SpeedInsights />
       <I18nProvider>
         <BrowserRouter>
           <AuthProvider>
