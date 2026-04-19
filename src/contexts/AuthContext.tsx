@@ -18,7 +18,7 @@ interface AuthContextType {
   profile: Profile | null;
   loading: boolean;
   signUp: (email: string, password: string, username: string) => Promise<{ error: Error | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signIn: (identifier: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: Error | null }>;
 }
@@ -194,10 +194,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (identifier: string, password: string) => {
     try {
+      const normalizedIdentifier = identifier.trim();
+      let emailForSignIn = normalizedIdentifier;
+      const isEmail = normalizedIdentifier.includes('@');
+
+      if (!isEmail) {
+        const { data: resolvedEmail, error: resolveError } = await supabase.rpc('get_email_for_username', {
+          p_username: normalizedIdentifier,
+        });
+
+        if (resolveError) throw resolveError;
+
+        if (!resolvedEmail) {
+          throw new Error('Invalid username/email or password');
+        }
+
+        emailForSignIn = resolvedEmail;
+      }
+
       const { error } = await supabase.auth.signInWithPassword({
-        email,
+        email: emailForSignIn,
         password,
       });
 

@@ -177,6 +177,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_email_for_username: {
+        Args: { p_username: string }
+        Returns: string | null
+      }
       generate_game_code: { Args: never; Returns: string }
     }
     Enums: {

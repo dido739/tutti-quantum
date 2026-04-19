@@ -11,7 +11,7 @@ import { Atom, ArrowLeft, LogIn } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
@@ -22,7 +22,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await signIn(email, password);
+    const { error } = await signIn(identifier, password);
 
     if (error) {
       toast.error(error.message);
@@ -62,10 +62,10 @@ export default function Login() {
               <Label htmlFor="email">{t('login.email')}</Label>
               <Input
                 id="email"
-                type="email"
+                type="text"
                 placeholder={t('login.emailPlaceholder')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
                 required
                 className="bg-background/50"
               />
