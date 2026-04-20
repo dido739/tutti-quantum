@@ -83,6 +83,9 @@ export default function Index() {
               <Button size="lg" className="w-full sm:w-auto text-lg px-8 h-14 font-display group">
                 <Bot className="w-5 h-5 mr-2" />
                 {t('index.playAi')}
+                <span className="ml-2 rounded-full border border-black bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-black">
+                  Beta
+                </span>
                 <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
