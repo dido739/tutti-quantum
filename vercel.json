@@ -1,7 +1,39 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/register",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/local-game",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ai-game",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/online-game",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/online-game/:gameCode",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/how-to-play",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/leaderboard",
       "destination": "/index.html"
     }
   ]
