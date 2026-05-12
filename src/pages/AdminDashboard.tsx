@@ -378,8 +378,9 @@ export default function AdminDashboard() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs font-medium text-muted-foreground">Badges</label>
+                        <label htmlFor={`badges-${entry.user_id}`} className="text-xs font-medium text-muted-foreground">Badges</label>
                         <select
+                          id={`badges-${entry.user_id}`}
                           className="h-28 w-full rounded-md border border-border/50 bg-background px-3 text-sm shadow-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
                           value={entry.badge_types}
                           disabled={actionLoading === entry.user_id || isCurrentUser}
@@ -390,7 +391,7 @@ export default function AdminDashboard() {
                           }}
                         >
                           {badgeOptions.map((option) => (
-                            <option key={option.label} value={option.value ?? ''}>
+                            <option key={option.value} value={option.value}>
                               {option.label}
                             </option>
                           ))}

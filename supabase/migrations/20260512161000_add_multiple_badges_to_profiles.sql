@@ -124,3 +124,4 @@ END;
 $$;
 
 GRANT EXECUTE ON FUNCTION public.admin_set_profile_badges(UUID, TEXT[]) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.admin_set_profile_badge(UUID, TEXT) TO authenticated;

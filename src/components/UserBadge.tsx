@@ -90,11 +90,7 @@ export function normalizeBadgeTypes(
   badgeType?: string | null,
   badgeTypesInput?: string[] | null
 ): BadgeType[] {
-  const candidates = Array.isArray(badgeTypesInput)
-    ? badgeTypesInput
-    : typeof badgeType === 'string'
-      ? badgeType.split(',').map((value) => value.trim())
-      : [];
+  const candidates = Array.isArray(badgeTypesInput) ? badgeTypesInput : [];
 
   const unique = new Set<BadgeType>();
 
