@@ -40,6 +40,7 @@ interface GamePlayer {
   is_ready: boolean;
   username?: string;
   badge_type?: string | null;
+  badge_types?: string[] | null;
 }
 
 export default function OnlineGame() {
@@ -115,13 +116,14 @@ export default function OnlineGame() {
       const userIds = data.map(p => p.user_id);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('user_id, username, badge_type')
+        .select('user_id, username, badge_type, badge_types')
         .in('user_id', userIds);
 
       const profileRows = (profiles ?? []) as Array<{
         user_id: string;
         username: string;
         badge_type: string | null;
+        badge_types: string[] | null;
       }>;
 
       const profileMap = new Map(profileRows.map(p => [p.user_id, p]));
@@ -132,6 +134,7 @@ export default function OnlineGame() {
         hand: (p.hand as any[]) || [],
         username: profileMap.get(p.user_id)?.username || `Player ${p.player_index + 1}`,
         badge_type: profileMap.get(p.user_id)?.badge_type || null,
+        badge_types: profileMap.get(p.user_id)?.badge_types || null,
       })));
     }
   };
@@ -561,7 +564,7 @@ export default function OnlineGame() {
                         <Users className="w-4 h-4 text-primary" />
                         <div className="flex-1 flex items-center gap-2">
                           <span>{player.username}</span>
-                          <UserBadge badgeType={player.badge_type} size="sm" />
+                          <UserBadge badgeType={player.badge_type} badgeTypes={player.badge_types} size="sm" />
                         </div>
                         {player.user_id === session.host_user_id && <span className="text-xs text-primary">{t('common.host')}</span>}
                         {player.user_id === user?.id && <span className="text-xs text-muted-foreground">{t('common.you')}</span>}

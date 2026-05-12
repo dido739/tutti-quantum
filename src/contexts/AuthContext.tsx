@@ -11,6 +11,7 @@ interface Profile {
   total_wins: number;
   highest_score: number;
   badge_type?: string | null;
+  badge_types?: string[] | null;
   is_banned?: boolean;
   banned_reason?: string | null;
   banned_at?: string | null;

@@ -4,7 +4,7 @@ import { useI18n } from '@/contexts/I18nContext';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { UserBadge } from '@/components/UserBadge';
+import { normalizeBadgeTypes, UserBadge } from '@/components/UserBadge';
 import { 
   Atom, Users, Globe, Trophy, LogIn, LogOut, User, 
   ChevronRight, Sparkles, Zap, Target, Bot, BookOpen
@@ -13,7 +13,7 @@ import {
 export default function Index() {
   const { user, profile, signOut, loading } = useAuth();
   const { t } = useI18n();
-  const isAdmin = profile?.badge_type === 'admin' || profile?.badge_type === 'dev';
+  const isAdmin = normalizeBadgeTypes(profile?.badge_type, profile?.badge_types).some((badge) => badge === 'admin' || badge === 'dev');
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -37,7 +37,7 @@ export default function Index() {
                 <div className="flex items-center gap-2 text-sm">
                   <User className="w-4 h-4 text-primary" />
                   <span className="text-foreground">{profile?.username || t('index.playerFallback')}</span>
-                  <UserBadge badgeType={profile?.badge_type} size="sm" />
+                  <UserBadge badgeType={profile?.badge_type} badgeTypes={profile?.badge_types} size="sm" />
                 </div>
                 <Button variant="outline" size="sm" onClick={signOut} className="gap-2">
                   <LogOut className="w-4 h-4" />

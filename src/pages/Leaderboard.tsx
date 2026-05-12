@@ -25,6 +25,7 @@ interface LeaderboardEntry {
     username: string;
     avatar_url: string | null;
     badge_type?: string | null;
+    badge_types?: string[] | null;
   } | null;
 }
 
@@ -54,7 +55,7 @@ export default function Leaderboard() {
       const userIds = [...new Set(data.map(e => e.user_id))];
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('user_id, username, avatar_url, badge_type')
+        .select('user_id, username, avatar_url, badge_type, badge_types')
         .in('user_id', userIds);
       
       const profileMap = new Map((profiles as any[])?.map(p => [p.user_id, p]) || []);
@@ -161,7 +162,7 @@ export default function Leaderboard() {
                           )}>
                             {entry.profiles?.username || t('leaderboard.unknown')}
                           </p>
-                          <UserBadge badgeType={entry.profiles?.badge_type} size="sm" />
+                          <UserBadge badgeType={entry.profiles?.badge_type} badgeTypes={entry.profiles?.badge_types} size="sm" />
                           {isCurrentUser && <span className="text-xs text-muted-foreground">{t('common.you')}</span>}
                         </div>
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">

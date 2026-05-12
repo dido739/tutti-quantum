@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useI18n } from '@/contexts/I18nContext';
 import { ParticleBackground } from '@/components/ParticleBackground';
-import { UserBadge, badgeConfig, type BadgeType } from '@/components/UserBadge';
+import { UserBadge, badgeConfig, normalizeBadgeTypes, type BadgeType } from '@/components/UserBadge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,7 @@ type AdminProfile = {
   username: string;
   avatar_url: string | null;
   badge_type: BadgeType | null;
+  badge_types: BadgeType[];
   is_banned: boolean;
   banned_reason: string | null;
   banned_at: string | null;
@@ -29,13 +30,12 @@ type AdminProfile = {
   highest_score: number;
 };
 
-const badgeOptions: Array<{ value: BadgeType | null; label: string }> = [
-  { value: null, label: 'No badge' },
-  ...Object.entries(badgeConfig).map(([value, config]) => ({
-    value: value as BadgeType,
-    label: config.label,
-  })),
-];
+const badgeOptions: Array<{ value: BadgeType; label: string }> = Object.entries(badgeConfig).map(([value, config]) => ({
+  value: value as BadgeType,
+  label: config.label,
+}));
+
+const hasAdminBadge = (badgeTypes: BadgeType[]) => badgeTypes.some((badge) => badge === 'admin' || badge === 'dev');
 
 export default function AdminDashboard() {
   const { user, profile, loading: authLoading } = useAuth();
@@ -45,20 +45,28 @@ export default function AdminDashboard() {
   const [loadingProfiles, setLoadingProfiles] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
-  const isAdmin = profile?.badge_type === 'admin' || profile?.badge_type === 'dev';
+  const isAdmin = hasAdminBadge(normalizeBadgeTypes(profile?.badge_type, profile?.badge_types));
   const profileLoading = Boolean(user && profile === null);
 
   const loadProfiles = async () => {
     setLoadingProfiles(true);
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, user_id, username, avatar_url, badge_type, is_banned, banned_reason, banned_at, created_at, updated_at, total_games_played, total_wins, highest_score')
+      .select('id, user_id, username, avatar_url, badge_type, badge_types, is_banned, banned_reason, banned_at, created_at, updated_at, total_games_played, total_wins, highest_score')
       .order('created_at', { ascending: false });
 
     if (error) {
       toast.error(error.message);
     } else {
-      setProfiles((data ?? []) as AdminProfile[]);
+      const normalized = ((data ?? []) as Array<AdminProfile & { badge_types: string[] | null }>).map((entry) => {
+        const badges = normalizeBadgeTypes(entry.badge_type, entry.badge_types);
+        return {
+          ...entry,
+          badge_type: badges[0] ?? null,
+          badge_types: badges,
+        };
+      });
+      setProfiles(normalized as AdminProfile[]);
     }
 
     setLoadingProfiles(false);
@@ -83,7 +91,7 @@ export default function AdminDashboard() {
       return (
         entry.username.toLowerCase().includes(term) ||
         entry.user_id.toLowerCase().includes(term) ||
-        (entry.badge_type ?? '').toLowerCase().includes(term) ||
+        entry.badge_types.join(', ').toLowerCase().includes(term) ||
         (entry.banned_reason ?? '').toLowerCase().includes(term)
       );
     });
@@ -93,7 +101,7 @@ export default function AdminDashboard() {
     return {
       total: profiles.length,
       banned: profiles.filter((entry) => entry.is_banned).length,
-      admins: profiles.filter((entry) => entry.badge_type === 'admin' || entry.badge_type === 'dev').length,
+      admins: profiles.filter((entry) => hasAdminBadge(entry.badge_types)).length,
     };
   }, [profiles]);
 
@@ -107,11 +115,11 @@ export default function AdminDashboard() {
     }
   };
 
-  const setBadge = async (userId: string, badgeType: BadgeType | null) => {
+  const setBadges = async (userId: string, badgeTypes: BadgeType[]) => {
     await runAction(userId, async () => {
-      const { error } = await supabase.rpc('admin_set_profile_badge', {
+      const { error } = await supabase.rpc('admin_set_profile_badges', {
         p_user_id: userId,
-        p_badge_type: badgeType,
+        p_badge_types: badgeTypes,
       });
 
       if (error) {
@@ -320,7 +328,7 @@ export default function AdminDashboard() {
                       <div className="space-y-2 min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                           <h2 className="font-display text-lg font-bold truncate">{entry.username}</h2>
-                          <UserBadge badgeType={entry.badge_type} size="sm" />
+                          <UserBadge badgeType={entry.badge_type} badgeTypes={entry.badge_types} size="sm" />
                           {entry.is_banned && <Badge variant="destructive">Banned</Badge>}
                           {isCurrentUser && <Badge variant="outline">You</Badge>}
                         </div>
@@ -370,19 +378,37 @@ export default function AdminDashboard() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs font-medium text-muted-foreground">Badge</label>
+                        <label htmlFor={`badges-${entry.user_id}`} className="text-xs font-medium text-muted-foreground">Badges</label>
                         <select
-                          className="h-10 w-full rounded-md border border-border/50 bg-background px-3 text-sm shadow-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-                          value={entry.badge_type ?? ''}
+                          id={`badges-${entry.user_id}`}
+                          className="h-28 w-full rounded-md border border-border/50 bg-background px-3 text-sm shadow-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+                          value={entry.badge_types.filter((badge) => badgeOptions.some((option) => option.value === badge))}
                           disabled={actionLoading === entry.user_id || isCurrentUser}
-                          onChange={(e) => setBadge(entry.user_id, (e.target.value as BadgeType) || null)}
+                          multiple
+                          onChange={(e) => {
+                            const selected = Array.from(e.target.selectedOptions).map((option) => option.value as BadgeType);
+                            setBadges(entry.user_id, selected);
+                          }}
                         >
                           {badgeOptions.map((option) => (
-                            <option key={option.label} value={option.value ?? ''}>
+                            <option key={option.value} value={option.value}>
                               {option.label}
                             </option>
                           ))}
                         </select>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] text-muted-foreground">Hold Ctrl/Cmd to select multiple badges</span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 px-2 text-xs"
+                            onClick={() => setBadges(entry.user_id, [])}
+                            disabled={actionLoading === entry.user_id || isCurrentUser || entry.badge_types.length === 0}
+                          >
+                            Clear
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
