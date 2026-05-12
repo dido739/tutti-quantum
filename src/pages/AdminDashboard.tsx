@@ -382,7 +382,7 @@ export default function AdminDashboard() {
                         <select
                           id={`badges-${entry.user_id}`}
                           className="h-28 w-full rounded-md border border-border/50 bg-background px-3 text-sm shadow-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-                          value={entry.badge_types}
+                          value={entry.badge_types.filter((badge) => badgeOptions.some((option) => option.value === badge))}
                           disabled={actionLoading === entry.user_id || isCurrentUser}
                           multiple
                           onChange={(e) => {

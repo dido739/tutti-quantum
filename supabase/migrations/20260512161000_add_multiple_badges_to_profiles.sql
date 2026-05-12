@@ -13,7 +13,7 @@ WHERE badge_types = '{}'::TEXT[];
 -- Keep existing badge_type column in sync for backward compatibility
 UPDATE public.profiles
 SET badge_type = badge_types[1]
-WHERE COALESCE(badge_type, '') IS DISTINCT FROM COALESCE(badge_types[1], '');
+WHERE badge_type IS DISTINCT FROM badge_types[1];
 
 -- Validate all badge values stored in the array
 ALTER TABLE public.profiles
