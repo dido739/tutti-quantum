@@ -79,12 +79,13 @@ BEGIN
     RAISE EXCEPTION 'Admin access required.';
   END IF;
 
-  SELECT COALESCE(ARRAY_AGG(badge ORDER BY badge), '{}'::TEXT[])
+  SELECT COALESCE(ARRAY_AGG(badge ORDER BY first_position), '{}'::TEXT[])
   INTO normalized_badge_types
   FROM (
-    SELECT DISTINCT TRIM(value) AS badge
-    FROM UNNEST(COALESCE(p_badge_types, '{}'::TEXT[])) AS value
+    SELECT TRIM(value) AS badge, MIN(position) AS first_position
+    FROM UNNEST(COALESCE(p_badge_types, '{}'::TEXT[])) WITH ORDINALITY AS t(value, position)
     WHERE TRIM(value) <> ''
+    GROUP BY TRIM(value)
   ) badges;
 
   IF EXISTS (
