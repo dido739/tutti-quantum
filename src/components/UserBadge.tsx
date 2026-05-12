@@ -8,7 +8,8 @@ import {
   Wrench, 
   Shield, 
   Sparkles,
-  LucideIcon 
+  LucideIcon,
+  User
 } from 'lucide-react';
 
 export type BadgeType = 'og' | 'pro' | 'supporter' | 'student' | 'teacher' | 'dev' | 'moderator' | 'admin';
@@ -67,16 +68,16 @@ export const badgeConfig: Record<BadgeType, BadgeConfig> = {
   moderator: {
     variant: 'destructive',
     label: 'Moderator',
-    icon: Shield,
-    color: 'text-orange-500',
+    icon: User,
+    color: 'text-white',
     bgColor: 'bg-orange-500/10',
   },
   admin: {
     variant: 'destructive',
     label: 'Admin',
     icon: Shield,
-    color: 'text-red-600',
-    bgColor: 'bg-red-600/10',
+    color: 'text-white',
+    bgColor: 'bg-red-600',
   },
 };
 

@@ -172,7 +172,7 @@ export default function Leaderboard() {
                           </span>
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
-                            {new Date(entry.created_at).toLocaleDateString()}
+                            {new Date(entry.created_at).toLocaleDateString('en-GB')}
                           </span>
                         </div>
                       </div>
