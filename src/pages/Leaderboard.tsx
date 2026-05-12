@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Medal, Award, User, Calendar, Target, Zap } from 'lucide-react';
+import { UserBadge } from '@/components/UserBadge';
 import { cn } from '@/lib/utils';
 
 interface LeaderboardEntry {
@@ -23,6 +24,7 @@ interface LeaderboardEntry {
   profiles: {
     username: string;
     avatar_url: string | null;
+    badge_type?: string | null;
   } | null;
 }
 
@@ -52,17 +54,17 @@ export default function Leaderboard() {
       const userIds = [...new Set(data.map(e => e.user_id))];
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('user_id, username, avatar_url')
+        .select('user_id, username, avatar_url, badge_type')
         .in('user_id', userIds);
       
-      const profileMap = new Map(profiles?.map(p => [p.user_id, p]) || []);
+      const profileMap = new Map((profiles as any[])?.map(p => [p.user_id, p]) || []);
       
       const entriesWithProfiles = data.map(entry => ({
         ...entry,
         profiles: profileMap.get(entry.user_id) || null,
       }));
       
-      setEntries(entriesWithProfiles as LeaderboardEntry[]);
+      setEntries(entriesWithProfiles as any);
     }
     
     setLoading(false);
@@ -152,13 +154,16 @@ export default function Leaderboard() {
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <p className={cn(
-                          'font-semibold truncate',
-                          isCurrentUser && 'text-primary'
-                        )}>
-                          {entry.profiles?.username || t('leaderboard.unknown')}
-                          {isCurrentUser && <span className="text-xs ml-2 text-muted-foreground">{t('common.you')}</span>}
-                        </p>
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className={cn(
+                            'font-semibold truncate',
+                            isCurrentUser && 'text-primary'
+                          )}>
+                            {entry.profiles?.username || t('leaderboard.unknown')}
+                          </p>
+                          <UserBadge badgeType={entry.profiles?.badge_type} size="sm" />
+                          {isCurrentUser && <span className="text-xs text-muted-foreground">{t('common.you')}</span>}
+                        </div>
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Target className="w-3 h-3" />

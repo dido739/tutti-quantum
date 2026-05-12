@@ -140,6 +140,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           created_at: string
+          badge_type: string | null
           highest_score: number
           id: string
           total_games_played: number
@@ -151,6 +152,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           created_at?: string
+          badge_type?: string | null
           highest_score?: number
           id?: string
           total_games_played?: number
@@ -162,6 +164,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           created_at?: string
+          badge_type?: string | null
           highest_score?: number
           id?: string
           total_games_played?: number

@@ -10,6 +10,7 @@ interface Profile {
   total_games_played: number;
   total_wins: number;
   highest_score: number;
+  badge_type?: string | null;
 }
 
 interface AuthContextType {
@@ -38,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .eq('user_id', userId)
       .maybeSingle();
 
-    setProfile(data ?? null);
+    setProfile((data as Profile | null) ?? null);
   };
 
   const ensureProfile = async (authUser: User) => {
@@ -49,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .maybeSingle();
 
     if (existingProfile) {
-      setProfile(existingProfile);
+      setProfile(existingProfile as Profile);
       return;
     }
 
@@ -240,7 +241,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const { error } = await supabase
         .from('profiles')
-        .update(updates)
+        .update(updates as any)
         .eq('user_id', user.id);
 
       if (error) throw error;
@@ -252,7 +253,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('user_id', user.id)
         .single();
 
-      setProfile(data);
+      setProfile((data as Profile) ?? null);
 
       return { error: null };
     } catch (error) {

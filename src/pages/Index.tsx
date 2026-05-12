@@ -4,6 +4,7 @@ import { useI18n } from '@/contexts/I18nContext';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { UserBadge } from '@/components/UserBadge';
 import { 
   Atom, Users, Globe, Trophy, LogIn, LogOut, User, 
   ChevronRight, Sparkles, Zap, Target, Bot, BookOpen
@@ -35,6 +36,7 @@ export default function Index() {
                 <div className="flex items-center gap-2 text-sm">
                   <User className="w-4 h-4 text-primary" />
                   <span className="text-foreground">{profile?.username || t('index.playerFallback')}</span>
+                  <UserBadge badgeType={profile?.badge_type} size="sm" />
                 </div>
                 <Button variant="outline" size="sm" onClick={signOut} className="gap-2">
                   <LogOut className="w-4 h-4" />

@@ -6,6 +6,7 @@ import { ParticleBackground } from '@/components/ParticleBackground';
 import { GameBoard } from '@/components/GameBoard';
 import { ParticleCard } from '@/components/ParticleCard';
 import { ScoreDisplay } from '@/components/ScoreDisplay';
+import { UserBadge } from '@/components/UserBadge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -38,6 +39,7 @@ interface GamePlayer {
   hand: any[];
   is_ready: boolean;
   username?: string;
+  badge_type?: string | null;
 }
 
 export default function OnlineGame() {
@@ -113,16 +115,23 @@ export default function OnlineGame() {
       const userIds = data.map(p => p.user_id);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('user_id, username')
+        .select('user_id, username, badge_type')
         .in('user_id', userIds);
-      
-      const profileMap = new Map(profiles?.map(p => [p.user_id, p.username]) || []);
+
+      const profileRows = (profiles ?? []) as Array<{
+        user_id: string;
+        username: string;
+        badge_type: string | null;
+      }>;
+
+      const profileMap = new Map(profileRows.map(p => [p.user_id, p]));
       
       setPlayers(data.map(p => ({
         ...p,
         diagram: (p.diagram as any[]) || [],
         hand: (p.hand as any[]) || [],
-        username: profileMap.get(p.user_id) || `Player ${p.player_index + 1}`,
+        username: profileMap.get(p.user_id)?.username || `Player ${p.player_index + 1}`,
+        badge_type: profileMap.get(p.user_id)?.badge_type || null,
       })));
     }
   };
@@ -430,6 +439,16 @@ export default function OnlineGame() {
     (card) => card.id === selectedCardId
   ) || null;
 
+  // Show loading state while auth is resolving
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center relative">
+        <ParticleBackground />
+        <Loader2 className="w-8 h-8 animate-spin text-primary relative z-10" />
+      </div>
+    );
+  }
+
   if (!authLoading && !user && mode !== 'menu') {
     return (
       <div className="min-h-screen flex items-center justify-center relative">
@@ -540,7 +559,12 @@ export default function OnlineGame() {
                     {players.map((player, index) => (
                       <div key={player.id} className={cn('flex items-center gap-3 p-3 rounded-lg border', player.user_id === user?.id ? 'bg-primary/10 border-primary/30' : 'bg-muted/30 border-border/50')}>
                         <Users className="w-4 h-4 text-primary" />
-                        <span className="flex-1">{player.username}{player.user_id === session.host_user_id && <span className="ml-2 text-xs text-primary">{t('common.host')}</span>}{player.user_id === user?.id && <span className="ml-2 text-xs text-muted-foreground">{t('common.you')}</span>}</span>
+                        <div className="flex-1 flex items-center gap-2">
+                          <span>{player.username}</span>
+                          <UserBadge badgeType={player.badge_type} size="sm" />
+                        </div>
+                        {player.user_id === session.host_user_id && <span className="text-xs text-primary">{t('common.host')}</span>}
+                        {player.user_id === user?.id && <span className="text-xs text-muted-foreground">{t('common.you')}</span>}
                       </div>
                     ))}
                     {Array.from({ length: session.max_players - players.length }).map((_, i) => (
@@ -557,12 +581,12 @@ export default function OnlineGame() {
           )}
 
           {(mode === 'playing' || session?.status === 'playing') && session && (
-            <div className="grid lg:grid-cols-[1fr,300px] gap-6">
-              <div className="space-y-6">
+            <div className="grid lg:grid-cols-[1fr,350px] gap-6 h-[calc(100vh-200px)]">
+              <div className="space-y-6 overflow-y-auto">
                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg font-display flex items-center justify-between">
-                      <span className="flex items-center gap-2"><Play className="w-5 h-5 text-primary" />{t('online.availableCards')}</span>
+                    <CardTitle className="text-base font-display flex items-center justify-between">
+                      <span className="flex items-center gap-2"><Play className="w-4 h-4 text-primary" />{t('online.availableCards')}</span>
                       <span className={cn('text-sm px-3 py-1 rounded-full', isMyTurn ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground')}>{isMyTurn ? t('online.yourTurn') : t('online.turnPlayer', { name: players[currentPlayerIndex]?.username || 'Player' })}</span>
                     </CardTitle>
                   </CardHeader>
@@ -596,7 +620,7 @@ export default function OnlineGame() {
                   </CardContent>
                 </Card>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-4 overflow-y-auto">
                 {players.map((player, index) => {
                   const { score, validVertices, invalidVertices, loops } = calculateScore(player.diagram || []);
                   return (
