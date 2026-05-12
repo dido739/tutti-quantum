@@ -141,6 +141,9 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           badge_type: string | null
+          is_banned: boolean
+          banned_reason: string | null
+          banned_at: string | null
           highest_score: number
           id: string
           total_games_played: number
@@ -153,6 +156,9 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           badge_type?: string | null
+          is_banned?: boolean
+          banned_reason?: string | null
+          banned_at?: string | null
           highest_score?: number
           id?: string
           total_games_played?: number
@@ -165,6 +171,9 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           badge_type?: string | null
+          is_banned?: boolean
+          banned_reason?: string | null
+          banned_at?: string | null
           highest_score?: number
           id?: string
           total_games_played?: number

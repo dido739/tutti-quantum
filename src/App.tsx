@@ -16,6 +16,7 @@ import OnlineGame from "./pages/OnlineGame";
 import AIGame from "./pages/AIGame";
 import HowToPlay from "./pages/HowToPlay";
 import Leaderboard from "./pages/Leaderboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
               <Route path="/online-game/:gameCode" element={<OnlineGame />} />
               <Route path="/how-to-play" element={<HowToPlay />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/admin" element={<AdminDashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

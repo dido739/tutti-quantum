@@ -13,6 +13,7 @@ import {
 export default function Index() {
   const { user, profile, signOut, loading } = useAuth();
   const { t } = useI18n();
+  const isAdmin = profile?.badge_type === 'admin' || profile?.badge_type === 'dev';
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -42,6 +43,14 @@ export default function Index() {
                   <LogOut className="w-4 h-4" />
                   {t('common.signOut')}
                 </Button>
+                {isAdmin && (
+                  <Link to="/admin">
+                    <Button variant="secondary" size="sm" className="gap-2">
+                      <User className="w-4 h-4" />
+                      Admin
+                    </Button>
+                  </Link>
+                )}
               </div>
             ) : (
               <div className="flex items-center gap-2">

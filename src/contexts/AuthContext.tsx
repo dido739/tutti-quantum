@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -11,6 +11,9 @@ interface Profile {
   total_wins: number;
   highest_score: number;
   badge_type?: string | null;
+  is_banned?: boolean;
+  banned_reason?: string | null;
+  banned_at?: string | null;
 }
 
 interface AuthContextType {
@@ -31,6 +34,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [banOverlayMessage, setBanOverlayMessage] = useState<string | null>(null);
+  const handledBannedSessionRef = useRef(false);
 
   const fetchProfile = async (userId: string) => {
     const { data } = await supabase
@@ -117,6 +122,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return new Error('Unexpected authentication error (no details returned)');
   };
+
+  useEffect(() => {
+    if (!user || !profile?.is_banned) {
+      handledBannedSessionRef.current = false;
+      return;
+    }
+
+    if (handledBannedSessionRef.current) {
+      return;
+    }
+
+    handledBannedSessionRef.current = true;
+    const message = profile.banned_reason
+      ? `Your account was banned: ${profile.banned_reason}`
+      : 'Your account was banned.';
+
+    setBanOverlayMessage(message);
+    window.setTimeout(() => {
+      setBanOverlayMessage(null);
+    }, 12000);
+
+    supabase.auth.signOut().catch(() => undefined);
+  }, [user, profile?.is_banned, profile?.banned_reason]);
 
   useEffect(() => {
     // Set up auth state listener BEFORE getting session
@@ -275,6 +303,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
+      {banOverlayMessage && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 px-4">
+          <div className="w-full max-w-3xl rounded-3xl border-2 border-red-300 bg-gradient-to-br from-red-950 via-red-900 to-red-800 px-8 py-10 text-center text-white shadow-2xl shadow-red-950/80 md:px-12 md:py-14">
+            <div className="mb-4 text-sm font-bold uppercase tracking-[0.35em] text-red-100 md:text-base">
+              Account Banned
+            </div>
+            <div className="text-4xl font-black leading-tight md:text-6xl">
+              Your account was banned.
+            </div>
+            <div className="mt-5 text-lg font-semibold text-red-100 md:text-2xl">
+              {banOverlayMessage}
+            </div>
+          </div>
+        </div>
+      )}
     </AuthContext.Provider>
   );
 }
